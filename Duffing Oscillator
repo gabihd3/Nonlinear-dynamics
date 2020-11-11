@@ -1,0 +1,61 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Created on Sat Apr 11 12:34:11 2020
+
+@author: gabriel
+"""
+
+from scipy.integrate import solve_ivp
+import matplotlib.pyplot as plt
+import numpy as np
+
+#Parameters
+delta,alpha,beta,w,gamma = (0, -1, 1, 1, 0.9)
+#Time Domain
+t = np.linspace(0,100,8000)
+#Initial Condtions
+
+y0 = [1,
+      1,
+      1]
+#Function Definition
+def duff(t,y):
+    return(y[1],
+           -(delta)*y[1]+alpha*y[0]-(beta)*y[0]**3+gamma*np.cos(w*t),
+           (w))
+    
+sol = solve_ivp(duff,[0,1000,9000],y0,t_eval = t,rtol=1e-13)
+plt.plot(sol.y[0],sol.y[1])
+plt.xlabel('position')
+#plt.ylabel('velocity')
+#plt.title("t = 200")
+plt.show()
+
+a = gamma*np.cos(w*t)
+
+
+#3-D Plotting
+fig = plt.figure()
+ax = plt.axes(projection="3d")
+x_line = (sol.y[0])
+y_line = (sol.y[1])
+z_line = (sol.y[2])
+ax.set_xlabel('X')
+ax.set_ylabel('Y')
+ax.set_zlabel('Z')
+ax.plot3D(x_line, y_line, z_line)
+plt.show()
+
+
+#3-D Plotting
+fig = plt.figure()
+ax = plt.axes(projection="3d")
+x_line = (sol.y[0])
+y_line = (sol.y[1])
+z_line = (a)
+ax.set_xlabel('X')
+ax.set_ylabel('Y')
+ax.set_zlabel('Z')
+ax.plot3D(x_line, y_line, z_line)
+plt.show()
